@@ -25,10 +25,11 @@ public class DishModel {
         //An alive cell survives if has two or three alive neighbours; otherwise, it dies of boredom (<2) or overpopulation (>3)
         //Rule2
         //An empty cell is reborn if it has exactly 3 neighbors
-        Vector<Vector<Boolean>> newMatrix = new Vector<Vector<Boolean>>();
-        Vector<Vector<Boolean>> comparisonMatrix = new Vector<Vector<Boolean>>();
+        Vector<Vector<Boolean>> newMatrix = new Vector<>();
+        Vector<Vector<Boolean>> comparisonMatrix;
         for (int i = 0; i < dimension; i++){
             Vector<Boolean> r = new Vector<>();
+            comparisonMatrix = new Vector<>();
             if (i == 0) comparisonMatrix.add(matrix.get(dimension - 1));
             else comparisonMatrix.add(matrix.get(i - 1));
             comparisonMatrix.add(matrix.get(i));
@@ -61,7 +62,7 @@ public class DishModel {
                 //Check if our cell was alive before
                 if (comparisonMatrix.get(1).get(1)) neighbourCount--;
                 //Check if cell died or was reborn
-                if (neighbourCount == 3) r.add(true);
+                if (((neighbourCount == 2) && comparisonMatrix.get(1).get(1)) || neighbourCount == 3) r.add(true);
                 else r.add(false);
             }
             newMatrix.add(r);
