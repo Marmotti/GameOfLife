@@ -9,18 +9,18 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int seed = scanner.nextInt();
         int dimension = scanner.nextInt();
+        int seed = scanner.nextInt();
+        int numberOfIterations = scanner.nextInt();
 
         DishView dishView = new DishView();
         DishModel dishModel = new DishModel();
         Vector<Vector<Boolean>> matrix = dishModel.generateMatrix(seed, dimension);
 
-        dishView.printMatrix(matrix, dimension);
+        for (int i=0; i<numberOfIterations; i++){
+            matrix = dishModel.newGeneration(matrix, dimension);
+        }
 
-        matrix = dishModel.newGeneration(matrix, dimension);
-
-        System.out.println("\n\n");
         dishView.printMatrix(matrix, dimension);
     }
 }

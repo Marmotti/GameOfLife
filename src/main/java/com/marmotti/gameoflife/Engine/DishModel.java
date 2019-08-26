@@ -20,6 +20,7 @@ public class DishModel {
         return matrix;
     }
 
+        //TODO 2 Optimise code
         public Vector<Vector<Boolean>> newGeneration(Vector<Vector<Boolean>> matrix, int dimension){
         //Rule1
         //An alive cell survives if has two or three alive neighbours; otherwise, it dies of boredom (<2) or overpopulation (>3)
@@ -27,9 +28,10 @@ public class DishModel {
         //An empty cell is reborn if it has exactly 3 neighbors
         Vector<Vector<Boolean>> newMatrix = new Vector<>();
         Vector<Vector<Boolean>> comparisonMatrix;
+        Vector<Boolean> r;
         for (int i = 0; i < dimension; i++){
-            Vector<Boolean> r = new Vector<>();
             comparisonMatrix = new Vector<>();
+            r = new Vector<>();
             if (i == 0) comparisonMatrix.add(matrix.get(dimension - 1));
             else comparisonMatrix.add(matrix.get(i - 1));
             comparisonMatrix.add(matrix.get(i));
@@ -48,8 +50,8 @@ public class DishModel {
                 //Right border
                 else if(j == dimension-1){
                     for (int k=0; k<3; k++){
-                        if (comparisonMatrix.get(k).get(dimension-2)) neighbourCount++;
-                        if (comparisonMatrix.get(k).get(dimension-1)) neighbourCount++;
+                        if (comparisonMatrix.get(k).get(j-1)) neighbourCount++;
+                        if (comparisonMatrix.get(k).get(j)) neighbourCount++;
                         if (comparisonMatrix.get(k).get(0)) neighbourCount++;
                     }
                 }
@@ -60,9 +62,13 @@ public class DishModel {
                         }
                     }
                 //Check if our cell was alive before
-                if (comparisonMatrix.get(1).get(1)) neighbourCount--;
+                boolean isAlive = comparisonMatrix.get(1).get(j);
+                if (isAlive) neighbourCount--;
                 //Check if cell died or was reborn
-                if (((neighbourCount == 2) && comparisonMatrix.get(1).get(1)) || neighbourCount == 3) r.add(true);
+                if(neighbourCount < 2 && isAlive) r.add(false);
+                else if (neighbourCount > 3 && isAlive) r.add(false);
+                else if (neighbourCount == 3) r.add(true);
+                else if (neighbourCount == 2 && isAlive) r.add(true);
                 else r.add(false);
             }
             newMatrix.add(r);
