@@ -2,7 +2,9 @@ package main.java.com.marmotti.gameoflife.View;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.io.IOException;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 public class DishView {
 
@@ -51,6 +53,14 @@ public class DishView {
         catch (Exception ignored){}
     }
 
+    private void clearCmdScreen(){
+        try {
+            Thread.sleep(1000);
+                new ProcessBuilder("cmd","/c","cls").inheritIO().start().waitFor();
+        }
+        catch (IOException | InterruptedException e) {}
+    }
+
     private void drawHorizontalLine(int dimension){
         System.out.print("+");
         for(int i = 0; i<dimension; i++){
@@ -62,6 +72,7 @@ public class DishView {
     public void drawAnimation(Vector<Vector<Boolean>> matrix, int dimension){
 //        clearScreenRobot();
         printMatrix(matrix, dimension);
-        shoveScreen(dimension);
+        clearCmdScreen();
+//        shoveScreen(dimension);
     }
 }
