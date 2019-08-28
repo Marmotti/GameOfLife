@@ -5,6 +5,8 @@ import java.util.Vector;
 
 public class DishModel {
 
+    private int aliveCells;
+
     public Vector<Vector<Boolean>> generateMatrix(int seed, int dimension){
         Random random = new Random(seed);
 
@@ -13,14 +15,16 @@ public class DishModel {
         for (int i = 0; i < dimension; i++){
             Vector<Boolean> r = new Vector<>();
             for (int j = 0; j < dimension; j++){
-                r.add(random.nextBoolean());
+                Boolean x = random.nextBoolean();
+                if(x) aliveCells++;
+                r.add(x);
             }
             matrix.add(r);
         }
         return matrix;
     }
 
-        //TODO 2 Optimise code
+        //TODO 1 Optimise code
         public Vector<Vector<Boolean>> newGeneration(Vector<Vector<Boolean>> matrix, int dimension){
         //Rule1
         //An alive cell survives if has two or three alive neighbours; otherwise, it dies of boredom (<2) or overpopulation (>3)
@@ -29,6 +33,7 @@ public class DishModel {
         Vector<Vector<Boolean>> newMatrix = new Vector<>();
         Vector<Vector<Boolean>> comparisonMatrix;
         Vector<Boolean> r;
+        aliveCells = 0;
         for (int i = 0; i < dimension; i++){
             comparisonMatrix = new Vector<>();
             r = new Vector<>();
@@ -67,12 +72,22 @@ public class DishModel {
                 //Check if cell died or was reborn
                 if(neighbourCount < 2 && isAlive) r.add(false);
                 else if (neighbourCount > 3 && isAlive) r.add(false);
-                else if (neighbourCount == 3) r.add(true);
-                else if (neighbourCount == 2 && isAlive) r.add(true);
+                else if (neighbourCount == 3){
+                    r.add(true);
+                    aliveCells++;
+                }
+                else if (neighbourCount == 2 && isAlive){
+                    r.add(true);
+                    aliveCells++;
+                }
                 else r.add(false);
             }
             newMatrix.add(r);
         }
         return newMatrix;
+    }
+
+    public int getAliveCells() {
+        return aliveCells;
     }
 }
